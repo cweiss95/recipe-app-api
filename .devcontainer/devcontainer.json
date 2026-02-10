@@ -46,16 +46,13 @@
 				"ms-python.vscode-pylance",
 				"ms-azuretools.vscode-docker",
 				"eamodio.gitlens"
-			]
-		},
-		"settings":
-		{
-			"python.languageServer": "Pylance",
-			"python.defaultInterpreterPath": "/py/bin/python",
-			"python.linting.pylintEnabled": true
+			],
+			"settings": {
+				"python.defaultInterpreterPath": "/py/bin/python",
+				"python.languageServer": "Pylance"
+			}
 		}
 	},
-
 	"remoteEnv": {
 		"TMPDIR": "/workspaces/tmp"
 	}
