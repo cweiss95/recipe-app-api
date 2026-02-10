@@ -47,8 +47,18 @@
 				"ms-azuretools.vscode-docker",
 				"eamodio.gitlens"
 			]
+		},
+		"settings":
+		{
+			"python.languageServer": "Pylance",
+			"python.defaultInterpreterPath": "/py/bin/python",
+			"python.linting.pylintEnabled": true
 		}
 	},
+
+	"remoteEnv": {
+		"TMPDIR": "/workspaces/tmp"
+	}
 
 	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
 	//"remoteUser": "django-user"
