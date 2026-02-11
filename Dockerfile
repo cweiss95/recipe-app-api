@@ -1,8 +1,10 @@
-FROM python:3.14-alpine3.23
+FROM ghcr.io/astral-sh/uv:python3.14-alpine
 LABEL maintainer="Charles Weiss"
 
 ENV PYTHONBUFFERED=1
 
+COPY uv.lock /uv.lock
+COPY pyproject.toml /pyproject.toml
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./app /app
@@ -10,16 +12,16 @@ WORKDIR /app
 EXPOSE 8000
 
 ARG DEV=false
-RUN python -m venv /py && \
-    /py/bin/pip install --upgrade pip && \
-    apk add --update --no-cache postgresql-client && \
+RUN apk add --update --no-cache postgresql-client && \
     apk add --update --no-cache --virtual .tmp-build-deps \
         build-base postgresql-dev musl-dev && \
-    /py/bin/pip install -r /tmp/requirements.txt && \
+    uv sync --locked --no-dev && \
     if [ $DEV = "true" ]; \
-        then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
+        then uv sync --locked --dev ; \
     fi  && \
     rm -rf /tmp && \
+    rm /uv.lock && \
+    rm /pyproject.toml && \
     apk del .tmp-build-deps && \
     adduser \
         --disabled-password \
@@ -27,6 +29,6 @@ RUN python -m venv /py && \
     mkdir -p /home/django-user && \
     chown -R django-user:django-user /home/django-user
 
-ENV PATH="/py/bin:$PATH"
+ENV PATH="/app/.venv/bin:$PATH"
 
 USER django-user

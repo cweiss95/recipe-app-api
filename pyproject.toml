@@ -1,0 +1,16 @@
+[project]
+name = "recipe-app-api"
+version = "0.1.0"
+description = "A Django recipe api app."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "django>=6.0.2,<6.1",
+    "djangorestframework>=3.16.1,<3.17",
+    "psycopg2>=2.9.11,<2.10",
+]
+
+[dependency-groups]
+dev = [
+    "flake8>=7.3.0,<7.4",
+]
