@@ -5,8 +5,6 @@ ENV PYTHONBUFFERED=1
 
 COPY uv.lock /uv.lock
 COPY pyproject.toml /pyproject.toml
-COPY ./requirements.txt /tmp/requirements.txt
-COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./app /app
 WORKDIR /app
 EXPOSE 8000
@@ -19,7 +17,6 @@ RUN apk add --update --no-cache postgresql-client && \
     if [ $DEV = "true" ]; \
         then uv sync --locked --dev ; \
     fi  && \
-    rm -rf /tmp && \
     rm /uv.lock && \
     rm /pyproject.toml && \
     apk del .tmp-build-deps && \
@@ -29,6 +26,6 @@ RUN apk add --update --no-cache postgresql-client && \
     mkdir -p /home/django-user && \
     chown -R django-user:django-user /home/django-user
 
-ENV PATH="/app/.venv/bin:$PATH"
+ENV PATH="/.venv/bin:$PATH"
 
 USER django-user
