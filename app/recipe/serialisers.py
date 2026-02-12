@@ -8,11 +8,12 @@ class RecipeSerialiser(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ['id', 'user','title', 'time_minutes', 'price', 'link']
+        fields = ['id', 'user', 'title', 'time_minutes', 'price', 'link']
         read_only_fields = ['id', 'user']
 
     def validate(self, attrs):
-        """Validate and raise validation error if readonly fields during an update."""
+        """Validate and raise validation error if
+           readonly fields during an update."""
         if self.instance:
             for field_name in self.initial_data:
                 field = self.get_fields().get(field_name)
@@ -21,6 +22,7 @@ class RecipeSerialiser(serializers.ModelSerializer):
                         {field_name: 'This field is read-only.'}
                     )
         return super().validate(attrs)
+
 
 class RecipeDetailSerialiser(RecipeSerialiser):
     """Serialiser for recipe detail view."""

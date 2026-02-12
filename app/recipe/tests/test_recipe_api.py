@@ -19,6 +19,7 @@ def detail_url(recipe_id):
     """Return recipe detail URL."""
     return reverse('recipe:recipe-detail', args=[recipe_id])
 
+
 def create_recipe(user, **params):
     """Helper function to create and return a sample recipe."""
     defaults = {
@@ -32,6 +33,7 @@ def create_recipe(user, **params):
 
     recipe = Recipe.objects.create(user=user, **defaults)
     return recipe
+
 
 def create_user(**params):
     """Helper function to create and return a user."""
@@ -56,7 +58,9 @@ class PrivateRecipeApiTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.user = create_user(email='test@example.com', password='testpass123')
+        self.user = create_user(
+            email='test@example.com',
+            password='testpass123')
         self.client.force_authenticate(user=self.user)
 
     def test_retrieve_recipes(self):
@@ -74,7 +78,9 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_recipes_limited_to_user(self):
         """Test retrieving recipes for user."""
-        other_user = create_user(email='other@example.com', password='testpass123')
+        other_user = create_user(
+            email='other@example.com',
+            password='testpass123')
         create_recipe(user=other_user)
         recipe = create_recipe(user=self.user)
 
@@ -165,7 +171,9 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_update_user_returns_error(self):
         """Test changing the recipe user results in an error."""
-        new_user = create_user(email='newuser@example.com', password='testpass123')
+        new_user = create_user(
+            email='newuser@example.com',
+            password='testpass123')
         recipe = create_recipe(user=self.user)
 
         payload = {'user': new_user.id}
@@ -186,7 +194,9 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_delete_other_users_recipe_error(self):
         """Test trying to delete another users recipe gives error."""
-        other_user = create_user(email='other@example.com', password='testpass123')
+        other_user = create_user(
+            email='other@example.com',
+            password='testpass123')
         recipe = create_recipe(user=other_user)
 
         url = detail_url(recipe.id)
