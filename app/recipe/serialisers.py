@@ -35,6 +35,13 @@ class RecipeSerialiser(serializers.ModelSerializer):
             'price', 'link', 'tags']
         read_only_fields = ['id', 'user']
 
+    def get_or_create_tags(self, tags_data, recipe):
+        """Handle getting or creating tags as needed."""
+        auth_user = self.context['request'].user
+        for tag in tags_data:
+            tag_obj, created = Tag.objects.get_or_create(user=auth_user, **tag)
+            recipe.tags.add(tag_obj)
+
     def validate(self, attrs):
         """Validate and raise validation error if
            readonly fields during an update."""
@@ -51,12 +58,21 @@ class RecipeSerialiser(serializers.ModelSerializer):
         """Create a recipe."""
         tags_data = validated_data.pop('tags', [])
         recipe = Recipe.objects.create(**validated_data)
-        auth_user = self.context['request'].user
-        for tag in tags_data:
-            tag_obj, created = Tag.objects.get_or_create(user=auth_user, **tag)
-            recipe.tags.add(tag_obj)
+        self.get_or_create_tags(tags_data, recipe)
 
         return recipe
+
+    def update(self, instance, validated_data):
+        """Update recipe."""
+        tags_data = validated_data.pop('tags', None)
+        if tags_data is not None:
+            instance.tags.clear()
+            self.get_or_create_tags(tags_data, instance)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
 
 
 class RecipeDetailSerialiser(RecipeSerialiser):
