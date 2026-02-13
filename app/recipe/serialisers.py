@@ -1,6 +1,33 @@
 """Serialisers for recipe API."""
 from rest_framework import serializers
-from core.models import Recipe, Tag
+from core.models import Recipe, Tag, Ingredient
+
+
+def validate_read_only_fields(serialiser):
+    """Validate and raise validation error if
+       readonly fields during an update."""
+    if serialiser.instance:
+        for field_name in serialiser.initial_data:
+            field = serialiser.get_fields().get(field_name)
+            if field and field.read_only:
+                raise serializers.ValidationError(
+                    {field_name: 'This field is read-only.'}
+                )
+
+
+class IngredientSerialiser(serializers.ModelSerializer):
+    """Serialiser for ingredient objects."""
+
+    class Meta:
+        model = Ingredient
+        fields = ['id', 'user', 'name']
+        read_only_fields = ['id', 'user']
+
+    def validate(self, attrs):
+        """Validate and raise validation error if
+           readonly fields during an update."""
+        validate_read_only_fields(self)
+        return super().validate(attrs)
 
 
 class TagSerialiser(serializers.ModelSerializer):
@@ -14,13 +41,7 @@ class TagSerialiser(serializers.ModelSerializer):
     def validate(self, attrs):
         """Validate and raise validation error if
            readonly fields during an update."""
-        if self.instance:
-            for field_name in self.initial_data:
-                field = self.get_fields().get(field_name)
-                if field and field.read_only:
-                    raise serializers.ValidationError(
-                        {field_name: 'This field is read-only.'}
-                    )
+        validate_read_only_fields(self)
         return super().validate(attrs)
 
 
@@ -45,13 +66,7 @@ class RecipeSerialiser(serializers.ModelSerializer):
     def validate(self, attrs):
         """Validate and raise validation error if
            readonly fields during an update."""
-        if self.instance:
-            for field_name in self.initial_data:
-                field = self.get_fields().get(field_name)
-                if field and field.read_only:
-                    raise serializers.ValidationError(
-                        {field_name: 'This field is read-only.'}
-                    )
+        validate_read_only_fields(self)
         return super().validate(attrs)
 
     def create(self, validated_data):
