@@ -1,4 +1,22 @@
 services:
+  dev:
+    build:
+      context: .
+      args:
+        - DEV=true
+    volumes:
+      - .:/app  # Mount full project root, including pyproject.toml + uv.lock
+      - dev-static-data:/vol/web/static
+    command: sleep infinity
+    user: root
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_USER=devuser
+      - DB_PASS=changeme
+    depends_on:
+      - db
+
   app:
     build:
       context: .

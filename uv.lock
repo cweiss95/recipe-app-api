@@ -218,6 +218,7 @@ dependencies = [
     { name = "drf-spectacular" },
     { name = "pillow" },
     { name = "psycopg2" },
+    { name = "uwsgi", marker = "sys_platform != 'win32'" },
 ]
 
 [package.dev-dependencies]
@@ -232,6 +233,7 @@ requires-dist = [
     { name = "drf-spectacular", specifier = ">=0.29.0,<0.30.0" },
     { name = "pillow", specifier = ">=12.1.1,<12.2.0" },
     { name = "psycopg2", specifier = ">=2.9.11,<2.10" },
+    { name = "uwsgi", marker = "sys_platform != 'win32'", specifier = ">=2.0.31,<2.0.32" },
 ]
 
 [package.metadata.requires-dev]
@@ -313,3 +315,9 @@ sdist = { url = "https://files.pythonhosted.org/packages/98/60/f174043244c5306c9
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a9/99/3ae339466c9183ea5b8ae87b34c0b897eda475d2aec2307cae60e5cd4f29/uritemplate-4.2.0-py3-none-any.whl", hash = "sha256:962201ba1c4edcab02e60f9a0d3821e82dfc5d2d6662a21abd533879bdb8a686", size = 11488, upload-time = "2025-06-02T15:12:03.405Z" },
 ]
+
+[[package]]
+name = "uwsgi"
+version = "2.0.31"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/9f/49/2f57640e889ba509fd1fae10cccec1b58972a07c2724486efba94c5ea448/uwsgi-2.0.31.tar.gz", hash = "sha256:e8f8b350ccc106ff93a65247b9136f529c14bf96b936ac5b264c6ff9d0c76257", size = 822796, upload-time = "2025-10-11T19:17:28.794Z" }
