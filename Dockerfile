@@ -32,7 +32,7 @@ RUN apk add --update --no-cache postgresql-client jpeg-dev && \
     chmod -R 755 /vol && \
     chmod -R +x /scripts
 
-ENV PATH="/.venv/bin:$PATH"
+ENV PATH="/scripts:/.venv/bin:$PATH"
 
 USER django-user
 
