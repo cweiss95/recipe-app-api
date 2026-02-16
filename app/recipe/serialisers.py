@@ -68,7 +68,9 @@ class RecipeSerialiser(serializers.ModelSerializer):
         """Handle getting or creating ingredients as needed."""
         auth_user = self.context['request'].user
         for ingredient in ingredients_data:
-            ingredient_obj, created = Ingredient.objects.get_or_create(user=auth_user, **ingredient)
+            ingredient_obj, created = Ingredient.objects.get_or_create(
+                user=auth_user,
+                **ingredient)
             recipe.ingredients.add(ingredient_obj)
 
     def validate(self, attrs):
